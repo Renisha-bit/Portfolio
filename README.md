@@ -52,15 +52,17 @@ git clone [https://github.com/](https://github.com/)<your-github-username>/renis
 cd renisha-portfolio
 ```
 ### Install dependencies
+```bash
 npm install
 or
 yarn install
 or
 pnpm install
-
+```
 ### Start the development server
+```bash
 npm run dev
-
+```
 ### Contact & Socials
 Portfolio: [v0-renisha-portfolio.vercel.app](https://v0-renisha-portfolio.vercel.app/#about)
 LinkedIn: [Renisha Chauhan](https://www.linkedin.com/in/renisha-chauhan-460a7826b?utm_source=share_via&utm_content=profile&utm_medium=member_android)
