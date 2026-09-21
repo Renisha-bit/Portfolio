@@ -1,10 +1,30 @@
 import { NextResponse } from 'next/server'
 
 /**
- * Contact endpoint (Phase 1: validation + logging).
- * Phase 2 will persist submissions to the database and/or forward via email.
- * Includes basic in-memory rate limiting and input validation/sanitization.
+ * Contact endpoint with validation, spam protection, and a graceful mailto fallback.
+ * Configure an email provider before treating this endpoint as a delivery service.
  */
+
+const IP_RE = /^(?:\d{1,3}(?:\.\d{1,3}){3}|[a-fA-F0-9:]+)$/
+
+function getClientKey(req: Request) {
+  const forwarded = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+  return forwarded && IP_RE.test(forwarded) ? forwarded : 'unknown'
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function isSpam(value: unknown) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+function mailtoFallback(email: string, subject: string, message: string) {
+  const to = process.env.CONTACT_EMAIL_TO || 'sp3llmanvictoria@gmail.com'
+  const params = new URLSearchParams({ subject, body: message })
+  return `mailto:${to}?${params.toString()}`
+}
 
 const WINDOW_MS = 60_000
 const MAX_PER_WINDOW = 5
@@ -30,8 +50,7 @@ function clean(value: unknown, max: number) {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export async function POST(req: Request) {
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  const ip = getClientKey(req)
 
   if (!rateLimit(ip)) {
     return NextResponse.json(
@@ -47,11 +66,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 })
   }
 
-  const data = body as Record<string, unknown>
-  const name = clean(data.name, 100)
-  const email = clean(data.email, 160)
-  const subject = clean(data.subject, 140)
-  const message = clean(data.message, 2000)
+  if (!isRecord(body)) {
+    return NextResponse.json({ error: 'Invalid payload.' }, { status: 400 })
+  }
+
+  if (isSpam(body.company_hp)) {
+    return NextResponse.json({ ok: true })
+  }
+
+  const name = clean(body.name, 100)
+  const email = clean(body.email, 160)
+  const subject = clean(body.subject, 140)
+  const message = clean(body.message, 2000)
 
   if (!name || !email || !subject || !message) {
     return NextResponse.json(
@@ -66,8 +92,13 @@ export async function POST(req: Request) {
     )
   }
 
-  // Phase 1: log only. Phase 2: persist to DB / send email.
-  console.log('[v0] contact submission:', { name, email, subject })
-
-  return NextResponse.json({ ok: true })
+  const fallbackUrl = mailtoFallback(email, subject, `From: ${name} <${email}>\n\n${message}`)
+  return NextResponse.json(
+    {
+      ok: false,
+      fallbackUrl,
+      error: 'Email delivery is not configured. Your email app can open a draft instead.',
+    },
+    { status: 503 },
+  )
 }
