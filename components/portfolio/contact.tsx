@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react'
 import {
   Mail,
   Download,
+  FileText,
   Send,
   Loader2,
   CheckCircle2,
@@ -32,13 +33,25 @@ export function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      if (!res.ok) throw new Error('Request failed')
+      const result = (await res.json()) as {
+        fallbackUrl?: string
+        error?: string
+      }
+      if (!res.ok) {
+        if (result.fallbackUrl) {
+          window.location.href = result.fallbackUrl
+          setStatus('success')
+          setMessage('Your email app is ready with this message. Please send it there.')
+          return
+        }
+        throw new Error(result.error || 'Request failed')
+      }
       setStatus('success')
       setMessage('Message sent. I will get back to you soon.')
       form.reset()
     } catch {
       setStatus('error')
-      setMessage('Something went wrong. Please email me directly.')
+      setMessage(`Could not deliver this form. Please email ${profile.email} directly.`)
     }
   }
 
@@ -61,37 +74,65 @@ export function Contact() {
         <Reveal className="lg:col-span-2">
           <div className="glass flex h-full flex-col rounded-2xl p-7">
             <div className="space-y-3">
-              {channels.map((c) => (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  target={c.href.startsWith('http') ? '_blank' : undefined}
-                  rel="noreferrer"
-                  className="group flex items-center gap-4 rounded-xl border border-border bg-background/40 p-4 transition-all hover:border-primary/40 hover:glow-sm"
-                >
-                  <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/15 text-primary">
-                    <c.icon className="h-5 w-5" />
+              {channels.map((c) => {
+                const content = (
+                  <>
+                    <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/15 text-primary">
+                      <c.icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">{c.label}</p>
+                      <p className="truncate text-sm font-medium">{c.value}</p>
+                    </div>
+                  </>
+                )
+                return c.href ? (
+                  <a
+                    key={c.label}
+                    href={c.href}
+                    target={c.href.startsWith('http') ? '_blank' : undefined}
+                    rel={c.href.startsWith('http') ? 'noreferrer' : undefined}
+                    className="group flex items-center gap-4 rounded-xl border border-border bg-background/40 p-4 transition-all hover:border-primary/40 hover:glow-sm"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div key={c.label} className="flex items-center gap-4 rounded-xl border border-border bg-background/40 p-4 opacity-60">
+                    {content}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">{c.label}</p>
-                    <p className="truncate text-sm font-medium">{c.value}</p>
-                  </div>
-                </a>
-              ))}
+                )
+              })}
             </div>
-            <a
-              href={profile.resumeUrl}
-              download
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
-            >
-              <Download className="h-4 w-4" />
-              Download Resume
-            </a>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <a
+                href={profile.resumeUrl}
+                download
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
+              <a
+                href={profile.cvUrl}
+                download
+                className="flex items-center justify-center gap-2 rounded-xl border border-primary/40 px-4 py-3 text-sm font-medium text-primary transition-all hover:bg-primary/10"
+              >
+                <FileText className="h-4 w-4" />
+                CV
+              </a>
+            </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.1} className="lg:col-span-3">
           <form onSubmit={onSubmit} className="glass rounded-2xl p-7">
+            <input
+              name="company_hp"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="absolute -left-[9999px] h-px w-px opacity-0"
+            />
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Name" name="name">
                 <input

@@ -82,15 +82,22 @@ export function Projects() {
                 </div>
 
                 <div className="mt-5 flex items-center gap-3 border-t border-border pt-4">
-                  <a
-                    href={p.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-                  >
-                    <GithubIcon className="h-4 w-4" />
-                    Code
-                  </a>
+                  {p.github ? (
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <GithubIcon className="h-4 w-4" />
+                      Code
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground/50">
+                      <GithubIcon className="h-4 w-4" />
+                      Repository coming soon
+                    </span>
+                  )}
                   {p.demo ? (
                     <a
                       href={p.demo}

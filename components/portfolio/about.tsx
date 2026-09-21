@@ -1,6 +1,7 @@
 'use client'
 
-import { Target, Compass, GraduationCap } from 'lucide-react'
+import Image from 'next/image'
+import { Target, Compass, GraduationCap, Download } from 'lucide-react'
 import { SectionHeading, SectionShell } from './section-heading'
 import { Reveal, RevealGroup, RevealItem } from '@/components/effects/reveal'
 import { AnimatedCounter } from '@/components/effects/animated-counter'
@@ -19,9 +20,18 @@ export function About() {
       <div className="grid gap-6 lg:grid-cols-5">
         <Reveal className="lg:col-span-3">
           <div className="glass h-full rounded-2xl p-7">
-            <p className="text-pretty text-lg leading-relaxed text-foreground/90">
-              {profile.summary}
-            </p>
+            <div className="mb-6 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <Image
+                src="/profile.jpg"
+                alt="Portrait of Renisha Chauhan"
+                width={144}
+                height={144}
+                className="h-28 w-28 rounded-2xl border-2 border-cyan-500/50 object-cover shadow-[0_0_15px_rgba(6,182,212,0.25)] sm:h-36 sm:w-36"
+              />
+              <p className="text-pretty text-lg leading-relaxed text-foreground/90">
+                {profile.summary}
+              </p>
+            </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl border border-border bg-background/40 p-4">
                 <div className="mb-2 flex items-center gap-2 text-primary">
@@ -42,6 +52,24 @@ export function About() {
                   technical documentation.
                 </p>
               </div>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={profile.resumeUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
+              <a
+                href={profile.cvUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-4 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/10"
+              >
+                <Download className="h-4 w-4" />
+                CV
+              </a>
             </div>
           </div>
         </Reveal>
