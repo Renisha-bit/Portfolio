@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react'
 import {
   Mail,
   Download,
+  FileText,
   Send,
   Loader2,
   CheckCircle2,
@@ -79,14 +80,24 @@ export function Contact() {
                 </a>
               ))}
             </div>
-            <a
-              href={profile.resumeUrl}
-              download
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
-            >
-              <Download className="h-4 w-4" />
-              Download Resume
-            </a>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <a
+                href={profile.resumeUrl}
+                download
+                className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
+              <a
+                href={profile.cvUrl}
+                download
+                className="flex items-center justify-center gap-2 rounded-xl border border-primary/40 px-4 py-3 text-sm font-medium text-primary transition-all hover:bg-primary/10"
+              >
+                <FileText className="h-4 w-4" />
+                CV
+              </a>
+            </div>
           </div>
         </Reveal>
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { Target, Compass, GraduationCap } from 'lucide-react'
+import { Target, Compass, GraduationCap, Download } from 'lucide-react'
 import { SectionHeading, SectionShell } from './section-heading'
 import { Reveal, RevealGroup, RevealItem } from '@/components/effects/reveal'
 import { AnimatedCounter } from '@/components/effects/animated-counter'
@@ -42,6 +42,24 @@ export function About() {
                   technical documentation.
                 </p>
               </div>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={profile.resumeUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:glow-md"
+              >
+                <Download className="h-4 w-4" />
+                Resume
+              </a>
+              <a
+                href={profile.cvUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-xl border border-primary/40 px-4 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/10"
+              >
+                <Download className="h-4 w-4" />
+                CV
+              </a>
             </div>
           </div>
         </Reveal>

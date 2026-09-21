@@ -16,6 +16,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/',
   linkedinHandle: 'Renisha Chauhan',
   resumeUrl: '/resume.pdf',
+  cvUrl: '/cv.pdf',
   summary:
     'Motivated cybersecurity student with solid technical curiosity, a steady work ethic, and creative problem-solving abilities. Seeking to apply foundational security skills and analytical thinking in an internship or junior security role.',
   objective:
