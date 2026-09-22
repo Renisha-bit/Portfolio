@@ -1,19 +1,19 @@
 <div align="center">
 
-# 🛡️ Renisha Chauhan — Portfolio Website
+# Renisha Chauhan — Portfolio Website
 ### `renisha.sec` | Cybersecurity Student & Digital Forensics Enthusiast
 
 [![Vercel Deployment](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel)](https://v0-renisha-portfolio.vercel.app)
 [![Portfolio Status](https://img.shields.io/badge/Status-Live-00f0ff?style=for-the-badge)](https://v0-renisha-portfolio.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
-[🌐 View Live Portfolio](https://v0-renisha-portfolio.vercel.app) • [💼 LinkedIn](https://www.linkedin.com) • [📧 Email Me](mailto:sp3llmanvictoria@gmail.com)
+[View Live Portfolio](https://v0-renisha-portfolio.vercel.app) • [LinkedIn](https://www.linkedin.com) • [Email Me](mailto:sp3llmanvictoria@gmail.com)
 
 </div>
 
 ---
 
-## 📌 Overview
+## Overview
 
 Welcome to the repository for my personal developer & security portfolio! 
 
@@ -21,7 +21,7 @@ Designed with a modern terminal/cyber aesthetic, this site showcases my academic
 
 ---
 
-## ✨ Features & Sections
+## Features & Sections
 
 - **Terminal Initialization & Hero:** Interactive cyber-terminal hero section with instant status flags.
 - **About & Journey:** Academic background (B.Tech in Cybersecurity at Silver Oak University), career objectives, and milestone timeline.
@@ -33,7 +33,7 @@ Designed with a modern terminal/cyber aesthetic, this site showcases my academic
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org/) (React)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
@@ -42,7 +42,7 @@ Designed with a modern terminal/cyber aesthetic, this site showcases my academic
 
 ---
 
-## 🚀 Getting Started Locally
+## Getting Started Locally
 
 To run this portfolio locally on your machine:
 
